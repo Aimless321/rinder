@@ -1,8 +1,8 @@
 # Rinder
 
 IOS and Android app made with:
+- [Capacitor](https://capacitorjs.com/docs/)
 - [Nuxt 3](https://nuxt.com/docs/getting-started/introduction)
-- [Ionic](https://ionicframework.com/docs/)
 - [TailwindCSS](https://tailwindcss.com/docs/installation)
 
 ## Setup

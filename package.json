@@ -10,10 +10,12 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxtjs/ionic": "^0.13.0",
     "@nuxtjs/tailwindcss": "^6.10.4",
     "nuxt": "^3.9.1",
     "vue": "^3.4.10",
     "vue-router": "^4.2.5"
+  },
+  "dependencies": {
+    "@heroicons/vue": "^2.1.1"
   }
 }
