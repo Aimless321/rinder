@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-screen justify-between">
+  <div class="flex flex-col h-screen overflow-hidden justify-between">
     <div class="grid place-content-center my-3">
       <RinderLogo/>
     </div>

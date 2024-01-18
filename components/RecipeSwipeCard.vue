@@ -76,7 +76,6 @@ const dragHandler = ({ movement: [x, y], vxvy: [velX, velY], dragging }) => {
   if (!dragging) {
     const moveOutWidth = document.body.clientWidth;
     const keep = Math.abs(x) < 80 || Math.abs(velX) < 0.5;
-    console.log(Math.abs(x));
 
     if (keep) {
       set({ x: 0, y: 0, rotate: 0, cursor: 'grab' });
