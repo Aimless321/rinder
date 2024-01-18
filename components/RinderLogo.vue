@@ -1,5 +1,5 @@
 <template>
-  <div class="flex mt-2 items-center bg-gradient-to-bl from-black via-emerald-500 to-gray-500 text-transparent bg-clip-text">
+  <div class="flex items-center bg-gradient-to-bl from-black via-emerald-500 to-gray-500 text-transparent bg-clip-text">
     <svg class="h-10 w-10 rotate-[160deg] -mr-1 fill-emerald-500" viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg">
       <g>
         <path d="m1057.4 233.54-8.0859-8.0625 7.8594-7.8359c7.6445-7.6445 7.6445-20.156 0-27.789l-32.602-32.609c-7.6445-7.6445-20.172-7.6445-27.801 0l-7.8359 7.8359-8.0742-8.0625-316.72 316.71 76.539 76.527z"/>
