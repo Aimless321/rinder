@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col">
-    <div class="grid place-content-center mb-3">
+    <div class="grid place-content-center my-3">
       <RinderLogo/>
     </div>
 
