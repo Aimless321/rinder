@@ -1,11 +1,18 @@
 <template>
-  <div class="flex flex-col h-full">
-    <TopNav/>
-    <div class="flex flex-grow py-4 items-center">
-      <RecipeCard/>
+  <div class="flex flex-col h-screen justify-between">
+    <div class="grid place-content-center mb-3">
+      <RinderLogo/>
     </div>
-    <RinderButtonBar class="mb-14"/>
+    <RecipeSwipeCard class="flex-1 max-h-[65%]" />
+    <RinderButtonBar class="my-4" />
+    <NavTabs class="mb-5"/>
   </div>
 </template>
+
 <script setup lang="ts">
+import {definePageMeta} from "#imports";
+
+definePageMeta({
+  layout: "home"
+});
 </script>
