@@ -1,84 +1,67 @@
 <template>
   <div ref="wrapper"
-       class="mx-2 overflow-hidden relative flex justify-center shadow-xl rounded-2xl">
+       class="mx-2 overflow-hidden flex flex-col justify-center rounded-2xl shadow-lg max-h-full">
     <img
         ref="image"
-        class="rounded-2xl inline-block w-full h-full object-cover"
-         src="https://plus.unsplash.com/premium_photo-1677637522995-f5e0cd64a0de?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fHBsYXRlfGVufDB8fDB8fHww"
+        class="rounded-t-2xl inline-block w-full h-full object-cover"
+        :src="`https://spoonacular.com/recipeImages/${recipe.id}-636x393.${recipe.imageType}`"
     >
-    <div ref="recipePane" class="hidden">
-      <div>
-        <h1 class="text-xl font-medium">Recipe Name</h1>
-        <p class="text-gray-500">Short descriptiopn or sum like this is a dish. with great flavbour. fish and bla h
-          blah.</p>
+    <div
+        class="bg-white border-t-[1px] py-2 max-h-64 overflow-y-scroll"
+    >
+      <h1 class="text-xl font-medium px-2">{{ recipe.title }}</h1>
+      <div class="text-gray-500 px-3 py-1 touch-pan-x whitespace-nowrap flex gap-1.5 overflow-auto">
+        <div v-if="recipe.cuisines.length > 0" class="pill">{{ recipe.cuisines[0] }}</div>
+        <div class="pill" v-for="s in recipe.dishTypes">{{ s }}</div>
       </div>
-      <div hide-on-bottom>
-        <p class="text-gray-500">Short descriptiopn or sum like this is a dish. with great flavbour. fish and bla h
-          blah.</p>
-        <p class="text-gray-500">Short descriptiopn or sum like this is a dish. with great flavbour. fish and bla h
-          blah.</p>
-        <p class="text-gray-500">Short descriptiopn or sum like this is a dish. with great flavbour. fish and bla h
-          blah.</p>
-        <p class="text-gray-500">Short descriptiopn or sum like this is a dish. with great flavbour. fish and bla h
-          blah.</p>
-        <p class="text-gray-500">Short descriptiopn or sum like this is a dish. with great flavbour. fish and bla h
-          blah.</p>
-      </div>
+      <h2 class="px-2 text-gray-800 font-semibold">Ingredients</h2>
+      <ol class="list-disc px-2 pl-6">
+        <li
+            v-for="ingredient in recipe.extendedIngredients"
+            class="text-gray-600"
+        >
+          {{ ingredient.measures.metric.amount }}
+          {{ getUnit(ingredient.measures.metric) }}
+          {{ ingredient.name }}
+        </li>
+      </ol>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {CupertinoPane} from "cupertino-pane";
 import {useDrag} from "@vueuse/gesture";
 import {useMotionProperties, useSpring} from "@vueuse/motion";
+import type {IngredientMeasure, Recipe} from "~/types/recipe";
+
+const props = defineProps<{ recipe: Recipe, active: Boolean }>();
+const active = toRef(props, 'active');
+
+const emit = defineEmits<{
+  like: []
+  dislike: []
+}>();
 
 const wrapper = ref();
 const image = ref();
-const recipePane = ref();
 
-onMounted(() => {
-  const drawer = new CupertinoPane(recipePane.value, {
-    bottomOffset: window.innerHeight - wrapper.value.clientHeight,
-    buttonDestroy: false,
-    initialBreak: "bottom",
-    breaks: {
-      top: {
-        enabled: true,
-        height: wrapper.value.clientHeight - 5,
-        bounce: false,
-      },
-      middle: {
-        enabled: false,
-      },
-      bottom: {
-        enabled: true,
-        height: 125,
-        bounce: true
-      }
-    }
-  });
-  drawer.present({animate: false});
-});
-
-const { motionProperties } = useMotionProperties(wrapper, {
+const {motionProperties} = useMotionProperties(wrapper, {
   cursor: 'grab',
   x: 0,
   y: 0,
   rotate: 0,
 });
-const { set } = useSpring(motionProperties);
+const {set} = useSpring(motionProperties);
 
-const dragHandler = ({ movement: [x, y], vxvy: [velX, velY], dragging }) => {
+const dragHandler = ({movement: [x, y], vxvy: [velX, velY], dragging}) => {
   const xMulti = x * 0.06;
-  const yMulti = y / 80;
 
   if (!dragging) {
     const moveOutWidth = document.body.clientWidth;
     const keep = Math.abs(x) < 80 || Math.abs(velX) < 0.5;
 
     if (keep) {
-      set({ x: 0, y: 0, rotate: 0, cursor: 'grab' });
+      set({x: 0, y: 0, rotate: 0, cursor: 'grab'});
       return;
     }
 
@@ -86,13 +69,24 @@ const dragHandler = ({ movement: [x, y], vxvy: [velX, velY], dragging }) => {
     const toX = x > 0 ? endX : -endX;
     const endY = Math.abs(velY) * moveOutWidth;
     const toY = y > 0 ? endY : -endY;
-    const rotate = xMulti * yMulti;
+    const rotate = xMulti * 10;
 
-    set({ x: toX, y: toY, rotate: rotate, cursor: 'grab' });
+    console.log('Swiped a card')
+    console.log(xMulti)
+
+    set({x: toX, y: toY, rotate: rotate, cursor: 'grab'});
+    setTimeout(() => {
+      if (xMulti > 0) {
+        emit("like");
+      } else {
+        emit("dislike");
+      }
+    }, 150);
+
     return;
   }
 
-  const rotate = xMulti * yMulti;
+  const rotate = xMulti * 0.4;
 
   set({
     cursor: 'grabbing',
@@ -103,8 +97,21 @@ const dragHandler = ({ movement: [x, y], vxvy: [velX, velY], dragging }) => {
 }
 
 useDrag(dragHandler, {
-  domTarget: image,
+  domTarget: wrapper,
+  axis: "x"
 })
+
+function getUnit(measure: IngredientMeasure) {
+  if (measure.unitShort === "g") {
+    return measure.unitShort;
+  }
+
+  if (measure.amount > 1) {
+    return measure.unitLong;
+  }
+
+  return measure.unitShort;
+}
 </script>
 
 <style>
@@ -114,5 +121,9 @@ useDrag(dragHandler, {
 
 .cupertino-pane-wrapper .pane {
   @apply relative w-11/12 bg-white rounded-t-2xl px-6 py-4 pointer-events-auto;
+}
+
+.pill {
+  @apply rounded-full ring-1 ring-gray-300 px-2 py-1 whitespace-nowrap inline-block;
 }
 </style>

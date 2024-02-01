@@ -7,7 +7,7 @@
       </g>
     </svg>
     <h4 class="text-3xl font-medium text-transparent">
-      Rinder
+      MyCuisine
     </h4>
   </div>
 </template>
