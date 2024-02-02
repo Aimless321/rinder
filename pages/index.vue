@@ -41,16 +41,26 @@ function fetchMoreRecipes() {
   console.log('Fetching more recipes');
 
   $fetch('/recipes/feed', {
+    baseURL: config.public.apiBaseUrl,
     headers: {
       "Authorization": `Bearer ${useAuthToken().value}`,
     },
-    baseURL: config.public.apiBaseUrl,
   }).then(async res => {
     recipes.value.push(...res.results);
   }).catch(err => console.error(err));
 }
 
 function rateRecipe(recipe: Recipe, rating: "like" | "dislike") {
-  recipes.value = recipes.value.filter(r => r.id !== recipe.id);
+  $fetch(`/recipes/${recipe.id}/rate`, {
+    baseURL: config.public.apiBaseUrl,
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${useAuthToken().value}`,
+    },
+    body: {rating}
+  }).then(async res => {
+    recipes.value = recipes.value.filter(r => r.id !== recipe.id);
+  }).catch(err => console.error(err));
+
 }
 </script>

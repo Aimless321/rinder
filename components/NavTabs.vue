@@ -1,6 +1,6 @@
 ﻿<template>
   <nav class="flex justify-center">
-    <div class="bg-white/90 backdrop-blur ring-1 ring-gray-100 gap-3 drop-shadow-2xl rounded-full w-fit flex justify-center items-center p-1">
+    <div class="bg-white/90 backdrop-blur gap-3 drop-shadow-2xl rounded-full w-fit flex justify-center items-center p-1">
       <NuxtLink to="/" exact-active-class="selected" class="link">
         <SwatchIcon class="icon"/>
         Explore

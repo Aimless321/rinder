@@ -20,9 +20,15 @@
             v-for="ingredient in recipe.extendedIngredients"
             class="text-gray-600"
         >
-          {{ ingredient.measures.metric.amount }}
-          {{ getUnit(ingredient.measures.metric) }}
-          {{ ingredient.name }}
+          <div class="flex w-full justify-between">
+            <span>
+              {{ ingredient.name }}
+            </span>
+            <span>
+              {{ ingredient.measures.metric.amount }}
+              {{ getUnit(ingredient.measures.metric) }}
+            </span>
+          </div>
         </li>
       </ol>
     </div>
@@ -69,7 +75,7 @@ const dragHandler = ({movement: [x, y], vxvy: [velX, velY], dragging}) => {
     const toX = x > 0 ? endX : -endX;
     const endY = Math.abs(velY) * moveOutWidth;
     const toY = y > 0 ? endY : -endY;
-    const rotate = xMulti * 10;
+    const rotate = xMulti * 0.8;
 
     console.log('Swiped a card')
     console.log(xMulti)
@@ -102,7 +108,7 @@ useDrag(dragHandler, {
 })
 
 function getUnit(measure: IngredientMeasure) {
-  if (measure.unitShort === "g") {
+  if (measure.unitShort === "g" || measure.unitShort === "ml") {
     return measure.unitShort;
   }
 
@@ -124,6 +130,6 @@ function getUnit(measure: IngredientMeasure) {
 }
 
 .pill {
-  @apply rounded-full ring-1 ring-gray-300 px-2 py-1 whitespace-nowrap inline-block;
+  @apply rounded-full border-[1px] border-gray-300 px-2 py-1.5 whitespace-nowrap inline-block;
 }
 </style>

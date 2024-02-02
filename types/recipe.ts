@@ -28,3 +28,9 @@ export interface IngredientMeasure {
     unitShort: string,
     unitLong: string,
 }
+
+export interface LikedRecipe {
+    recipe_id: number,
+    date: string,
+    recipe: Recipe,
+}
