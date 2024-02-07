@@ -4,7 +4,7 @@
       <div class="w-full border-t border-gray-300"/>
     </div>
     <div class="relative flex justify-start">
-      <span class="bg-white pr-3 text-xl font-medium leading-6 text-gray-900">
+      <span class="bg-white pr-3 text-2xl font-medium leading-6 text-gray-900">
         Liked {{ timeAgoString }}
       </span>
     </div>
@@ -31,7 +31,7 @@ const timeAgoString = computed(() => {
     return formatDistanceToNowStrict(props.date);
   }
 
-  return `${daysAgo} days ago`;
+  return `${Math.abs(daysAgo)} days ago`;
 });
 
 </script>

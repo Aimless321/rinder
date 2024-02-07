@@ -1,7 +1,8 @@
 <template>
   <div class="flex flex-col overflow-scroll px-2 gap-2 mb-20">
     <h2 class="text-3xl font-medium mb-2.5">All your favs</h2>
-    <template v-for="[date, recipes] of likedRecipes">
+    <RecipeCardBigSkeleton v-if="pending" />
+    <template v-else v-for="[date, recipes] of likedRecipes">
       <DateDivider :date="date"/>
       <div class="flex flex-col pt-2 pb-7 gap-4">
         <RecipeCardBig v-for="recipe in recipes" :likedRecipe="recipe"/>
@@ -10,18 +11,18 @@
   </div>
 </template>
 <script setup lang="ts">
-import RecipeCardBig from "~/components/RecipeCardBig.vue";
 import {format} from "date-fns";
 import {useAuthToken} from "#imports";
 import type {LikedRecipe} from "~/types/recipe";
 
 const config = useRuntimeConfig();
 
-const {data: likedRecipes} = await useFetch<LikedRecipe[]>('/recipes/liked', {
+const {data: likedRecipes, pending, error} = await useFetch<LikedRecipe[]>('/recipes/liked', {
   baseURL: config.public.apiBaseUrl,
   headers: {
     'Authorization': `Bearer ${useAuthToken().value}`
   },
+  lazy: true,
   deep: false,
   transform: (recipes) => {
     if (recipes === null) {

@@ -3,7 +3,12 @@
     <div class="grid place-content-center my-3">
       <RinderLogo/>
     </div>
+    <RecipeStackSkeleton v-if="recipes.length === 0 && !error" class="flex-1 max-h-[65%]"/>
+    <div v-else-if="error" class="grid place-content-center flex-1 max-h-[65%]">
+      <h2 class="text-red-500">Unable to fetch recipes</h2>
+    </div>
     <RecipeStack
+        v-else
         class="flex-1 max-h-[65%]"
         @like="rateRecipe($event, 'like')"
         @dislike="rateRecipe($event, 'dislike')"
@@ -17,12 +22,14 @@
 <script setup lang="ts">
 import {definePageMeta, useAuthToken, useRecipeFeedBuffer} from "#imports";
 import type {Recipe} from "~/types/recipe";
+import RecipeStackSkeleton from "~/components/RecipeStackSkeleton.vue";
 
 definePageMeta({
   layout: "home"
 });
 
 const recipes = useRecipeFeedBuffer();
+const error = ref(false);
 const config = useRuntimeConfig();
 
 onMounted(() => {
@@ -45,9 +52,14 @@ function fetchMoreRecipes() {
     headers: {
       "Authorization": `Bearer ${useAuthToken().value}`,
     },
+    timeout: 5000,
   }).then(async res => {
+    error.value = false;
     recipes.value.push(...res.results);
-  }).catch(err => console.error(err));
+  }).catch(err => {
+    error.value = true;
+    console.error(err);
+  });
 }
 
 function rateRecipe(recipe: Recipe, rating: "like" | "dislike") {

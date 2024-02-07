@@ -7,7 +7,7 @@
         :src="`https://spoonacular.com/recipeImages/${recipe.id}-636x393.${recipe.imageType}`"
     >
     <div
-        class="bg-white border-t-[1px] py-2 max-h-64 overflow-y-scroll"
+        class="bg-white border-t-[1px] border-gray-100 py-2 max-h-64 overflow-y-scroll"
     >
       <h1 class="text-xl font-medium px-2">{{ recipe.title }}</h1>
       <div class="text-gray-500 px-3 py-1 touch-pan-x whitespace-nowrap flex gap-1.5 overflow-auto">
