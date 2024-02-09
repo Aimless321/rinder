@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-screen overflow-y-scroll">
     <NuxtLayout>
       <NuxtPage/>
     </NuxtLayout>
@@ -50,10 +50,10 @@ function registerNewDevice() {
 
 <style>
 html, body {
-  @apply bg-white;
+  @apply bg-white overflow-y-hidden;
 }
 
 html.offwhite, body.offwhite {
-  @apply bg-gray-100;
+  @apply bg-gray-50;
 }
 </style>

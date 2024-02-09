@@ -1,7 +1,7 @@
 <template>
   <div ref="wrapper"
-       class="mx-2 overflow-hidden flex flex-col justify-center ring-1 ring-gray-100 rounded-2xl shadow-lg max-h-full">
-    <div class="inline-block animate-pulse w-full h-full bg-slate-300"></div>
+       class="mx-2 overflow-hidden flex flex-col justify-center ring-1 ring-gray-100 rounded-2xl shadow-lg">
+    <div class="inline-block animate-pulse w-full h-72 bg-slate-300"></div>
     <div
         class="bg-white p-6"
     >

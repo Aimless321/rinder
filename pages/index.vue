@@ -3,7 +3,7 @@
     <div class="grid place-content-center my-3">
       <RinderLogo/>
     </div>
-    <RecipeStackSkeleton v-if="recipes.length === 0 && !error" class="flex-1 max-h-[65%]"/>
+    <RecipeStackSkeleton v-if="recipes.length === 0 && !error" class="max-h-[65%]"/>
     <div v-else-if="error" class="grid place-content-center flex-1 max-h-[65%]">
       <h2 class="text-red-500">Unable to fetch recipes</h2>
     </div>
@@ -22,7 +22,6 @@
 <script setup lang="ts">
 import {definePageMeta, useAuthToken, useRecipeFeedBuffer} from "#imports";
 import type {Recipe} from "~/types/recipe";
-import RecipeStackSkeleton from "~/components/RecipeStackSkeleton.vue";
 
 definePageMeta({
   layout: "home"
@@ -55,7 +54,9 @@ function fetchMoreRecipes() {
     timeout: 5000,
   }).then(async res => {
     error.value = false;
-    recipes.value.push(...res.results);
+    recipes.value.push(...res);
+
+    persistBuffer();
   }).catch(err => {
     error.value = true;
     console.error(err);
@@ -74,5 +75,15 @@ function rateRecipe(recipe: Recipe, rating: "like" | "dislike") {
     recipes.value = recipes.value.filter(r => r.id !== recipe.id);
   }).catch(err => console.error(err));
 
+}
+
+watch(recipes, () => {
+  persistBuffer();
+})
+
+function persistBuffer() {
+  console.log('persisting recipe buffer');
+
+  localStorage.setItem("recipeFeedBuffer", JSON.stringify(recipes.value));
 }
 </script>

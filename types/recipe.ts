@@ -6,7 +6,8 @@ export interface Recipe {
     imageType: string,
     cuisines: string[],
     dishTypes: string[],
-    extendedIngredients: Ingredient[]
+    extendedIngredients: Ingredient[],
+    analyzedInstructions: Instruction[],
 }
 
 export interface Ingredient {
@@ -27,6 +28,20 @@ export interface IngredientMeasure {
     amount: number
     unitShort: string,
     unitLong: string,
+}
+
+export interface Instruction {
+    name: string,
+    steps: InstructionStep[],
+}
+
+export interface InstructionStep {
+    number: int,
+    length: {
+        number: int,
+        unit: string,
+    },
+    step: string,
 }
 
 export interface LikedRecipe {

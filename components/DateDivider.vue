@@ -1,10 +1,10 @@
 <template>
   <div class="relative">
-    <div class="absolute inset-0 flex items-center" aria-hidden="true">
-      <div class="w-full border-t border-gray-300"/>
+    <div class="absolute inset-0 top-0.5 flex items-center" aria-hidden="true">
+      <div class="w-full border-b border-gray-300"/>
     </div>
     <div class="relative flex justify-start">
-      <span class="bg-white pr-3 text-2xl font-medium leading-6 text-gray-900">
+      <span class="bg-gray-50 pr-2 text-2xl font-medium leading-6 text-gray-900">
         Liked {{ timeAgoString }}
       </span>
     </div>
